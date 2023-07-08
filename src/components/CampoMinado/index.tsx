@@ -3,6 +3,7 @@ import Tabuleiro from "../Tabuleiro";
 import './style.css';
 import GameDifficultyType from '../../types/GameDifficultyType';
 import Placar from '../Placar/Placar';
+import GameStatusType from '../../types/GameStatusType';
 
 const gameOptions: Array<GameDifficultyType> = [
     { name: 'Fácil', rows: 9, columns: 9, numberOfBombs: 10 },
@@ -14,8 +15,13 @@ const CampoMinado = () => {
 
     const [difficulty, setDifficulty] = useState<GameDifficultyType>(gameOptions[0]);
     const [bombsFinded, setBombsFinded] = useState<number>(0);
+    const [status, setStatus] = useState<GameStatusType>('PLAYING');
 
-    console.log('Campo minado renderizou');
+    const reset = () => {
+        setDifficulty((difficulty) => ({ ...difficulty }));
+        setBombsFinded(0);
+        setStatus('PLAYING');
+    }
 
     return (
         <div id="campo-minado">
@@ -24,10 +30,26 @@ const CampoMinado = () => {
                     difficulties={ gameOptions }
                     selectedDifficulty={difficulty}
                     setDifficulty={setDifficulty}
+                    reset={reset}
                 />
+            </div>
+            { (status === 'WIN' || status === 'LOST') && (
+                <div id="feedback" className={ status === 'WIN' ? 'win' : 'lost' }>
+                    { status === 'WIN' ? 'Parabéns você ganhou !!!' : 'Oops, Você perdeu :(' }
+                </div>
+            ) }
+            <div id="bombs-summary-container">
+                <div id="bombs-summary-contend">
+                    Bombas encontradas: { bombsFinded } / { difficulty.numberOfBombs }
+                </div>
             </div>
             <Tabuleiro 
                 gameOption={difficulty}
+                setLost={() => setStatus('LOST')}
+                setWin={() => setStatus('WIN')}
+                increaseBombsFinded={() => setBombsFinded((bombs) => bombs + 1)}
+                decreaseBombsFinded={() => setBombsFinded((bombs) => bombs - 1)}
+                isPlaying={ status === 'PLAYING' }
             />
         </div>
     );

@@ -7,6 +7,30 @@
     align-items: center;
 }
 
-#placar-container {
-    margin-bottom: 2.5em;
+#placar-container,
+#feedback,
+#bombs-summary-container {
+    margin-bottom: 0.4em;
+}
+
+#feedback {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#feedback.win {
+    color: #33D53B;
+}
+
+#feedback.lost {
+    color: #F51313;
+}
+
+#bombs-summary-container {
+    background-color: #3FBF9D;
+    color: #FFF;
+    padding: 10px 7px;
+    border-radius: 5px;
+    font-size: 1.1em;
 }

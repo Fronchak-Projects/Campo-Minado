@@ -6,13 +6,14 @@ import './style.css';
 type Props = {
     difficulties: Array<GameDifficultyType>;
     selectedDifficulty: GameDifficultyType;
-    setDifficulty: (difficultyOption: GameDifficultyType) => void
+    setDifficulty: (difficultyOption: GameDifficultyType) => void;
+    reset: () => void;
 }
 
-const Placar = ({ difficulties, selectedDifficulty, setDifficulty }: Props) => {
+const Placar = ({ difficulties, selectedDifficulty, setDifficulty, reset }: Props) => {
 
     const handleResetClick = () => {
-        setDifficulty({ ...selectedDifficulty })
+        reset();
     }
 
     return (

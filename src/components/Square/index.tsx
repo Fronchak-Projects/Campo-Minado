@@ -6,23 +6,21 @@ type Props = {
     square: SquareType,
     clickAt: (row: number, column: number) => void,
     rightClickAt: (row: number, column: number) => void,
+    isPlaying: boolean
 }
 
-const Square = ({ square, clickAt, rightClickAt }: Props) => {
+const Square = ({ square, clickAt, rightClickAt, isPlaying }: Props) => {
     
-    const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-
-        if(event.type === 'click') {
-            if(square.status === 'NON_CLICKED') {
-                console.log('Left click');
-                clickAt(square.row, square.column);
-            }
+    const handleClick = () => {
+        if(square.status === 'NON_CLICKED' && isPlaying) {
+            console.log('Left click');
+            clickAt(square.row, square.column);
         }
     }
 
     const handleRigthClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
-        if(square.status === 'NON_CLICKED' || square.status === 'FLAG') {
+        if((square.status === 'NON_CLICKED' || square.status === 'FLAG') && isPlaying) {
             console.log('Rigth click');
             rightClickAt(square.row, square.column);
         }
@@ -44,13 +42,13 @@ const Square = ({ square, clickAt, rightClickAt }: Props) => {
             )
         }
         else {
-            return <div className="non-clicked"></div>
+            return <div className={`non-clicked ${ !isPlaying ? 'not-playing' : '' }`}></div>
         }
     }
 
     return (
-        <div className="square" 
-            onClick={(e) => handleClick(e)} 
+        <div className={`square`} 
+            onClick={() => handleClick()} 
             onContextMenu={(e) => handleRigthClick(e)}
         >
             { squareContend() }

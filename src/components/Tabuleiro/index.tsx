@@ -6,17 +6,22 @@ import './style.css';
 import GameDifficultyType from '../../types/GameDifficultyType';
 
 type Props = {
-    gameOption: GameDifficultyType
+    gameOption: GameDifficultyType;
+    setWin: () => void;
+    setLost: () => void;
+    increaseBombsFinded: () => void;
+    decreaseBombsFinded: () => void;
+    isPlaying: boolean;
 }
 
-const Tabuleiro = ({ gameOption }: Props) => {
+const Tabuleiro = ({ gameOption, setWin, setLost, increaseBombsFinded, decreaseBombsFinded, isPlaying }: Props) => {
 
     const [squares, setSquares] = useState<Array<Array<SquareType>>>([]);
     const first = useRef<boolean>(true);
     
     useEffect(() => {
         if(!first.current) {
-            const bombsIndex = getRandomNumbersBetween(0, gameOption.rows * gameOption.columns, gameOption.numberOfBombs);
+            const bombsIndex = getRandomNumbersBetween(0, gameOption.rows * gameOption.columns - 1, gameOption.numberOfBombs);
             const squaresAux: Array<Array<SquareType>> = [];
             let count = 0;
             for(let i = 0; i < gameOption.rows; i++) {
@@ -59,8 +64,6 @@ const Tabuleiro = ({ gameOption }: Props) => {
                 }
             })
         }
-
-
     }
 
     const handleClickAt = (row: number, column: number) => {
@@ -76,14 +79,23 @@ const Tabuleiro = ({ gameOption }: Props) => {
                     }
                 })
             })
+            setLost();
+            setSquares([...squaresAux]);
         }
         else {
-            clickAtNonBomb(square, squaresAux.flat())
-
+            clickAtNonBomb(square, squaresAux.flat());
+            setSquares([...squaresAux]);
+            checkIfWin();
         }
-        console.log(square);
+    }
 
-        setSquares([...squaresAux]);
+    const checkIfWin = () => {
+        const allNonBombosAreClicked = squares.flat()
+            .filter((square) => !square.isBomb)
+            .every((square) => square.status === 'CLICKED');
+        if(allNonBombosAreClicked) {
+            setWin();
+        }
     }
 
     const handleRigthClickAt = (row: number, column: number) => {
@@ -93,13 +105,13 @@ const Tabuleiro = ({ gameOption }: Props) => {
         const square = squaresAux[row][column];
         if(square.status === 'FLAG') {
             square.status = 'NON_CLICKED';
+            decreaseBombsFinded();
         }
         else if(square.status === 'NON_CLICKED') {
             square.status = 'FLAG';
+            increaseBombsFinded();
         }
-        console.log(square);
         setSquares([...squaresAux]);
-
     }
 
     const tabuleiroRows = () => {
@@ -113,6 +125,7 @@ const Tabuleiro = ({ gameOption }: Props) => {
                                 square={square} 
                                 clickAt={handleClickAt} 
                                 rightClickAt={handleRigthClickAt}    
+                                isPlaying={ isPlaying }
                             />
                         )
                     }) }

@@ -1,0 +1,12 @@
+#campo-minado {
+    padding: 1.5em;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#placar-container {
+    margin-bottom: 2.5em;
+}

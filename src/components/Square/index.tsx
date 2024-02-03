@@ -13,7 +13,6 @@ const Square = ({ square, clickAt, rightClickAt, isPlaying }: Props) => {
     
     const handleClick = () => {
         if(square.status === 'NON_CLICKED' && isPlaying) {
-            console.log('Left click');
             clickAt(square.row, square.column);
         }
     }
@@ -21,7 +20,6 @@ const Square = ({ square, clickAt, rightClickAt, isPlaying }: Props) => {
     const handleRigthClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         if((square.status === 'NON_CLICKED' || square.status === 'FLAG') && isPlaying) {
-            console.log('Rigth click');
             rightClickAt(square.row, square.column);
         }
     }

@@ -56,7 +56,6 @@ const Tabuleiro = ({ gameOption, setWin, setLost, increaseBombsFinded, decreaseB
         square.status = 'CLICKED';
         const nearBombs = nearSquares.filter((squaresAux) => squaresAux.isBomb).length;
         square.numberOfBombs = nearBombs;
-        console.log(nearSquares);
         if(nearBombs == 0) {
             nearSquares.forEach((squareAux) => {
                 if(!squareAux.isBomb && squareAux.numberOfBombs === undefined) {
@@ -67,7 +66,6 @@ const Tabuleiro = ({ gameOption, setWin, setLost, increaseBombsFinded, decreaseB
     }
 
     const handleClickAt = (row: number, column: number) => {
-        console.log('handleClickAt');
         const squaresAux = [...squares];
 
         const square = squaresAux[row][column];
@@ -99,7 +97,6 @@ const Tabuleiro = ({ gameOption, setWin, setLost, increaseBombsFinded, decreaseB
     }
 
     const handleRigthClickAt = (row: number, column: number) => {
-        console.log('handleRigthClickAt')
         const squaresAux = [...squares];
 
         const square = squaresAux[row][column];
